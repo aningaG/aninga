@@ -8,13 +8,26 @@
     "test": "nx test"
   },
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "@angular-devkit/schematics": "^14.2.6",
     "@nrwl/cli": "14.8.4",
+    "@nrwl/eslint-plugin-nx": "14.8.4",
+    "@nrwl/linter": "14.8.4",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "14.8.4",
+    "@nxext/sveltekit": "^14.0.0-next.2",
+    "@sveltejs/adapter-node": "next",
+    "@sveltejs/kit": "next",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "~8.15.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-svelte3": "^3.1.2",
     "nx": "14.8.4",
     "prettier": "^2.6.2",
+    "svelte": "^3.44.0",
+    "svelte-preprocess": "^4.9.4",
     "typescript": "~4.8.2"
-  }
+  },
+  "dependencies": {}
 }
