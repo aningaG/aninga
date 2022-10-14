@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DB_URL")
+}
+
+model Chapter {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  link        String  @unique
+  pages       Int
+  urlId       String
+  volumeUrlId String?
+  mangaUrlId  String?
+  baseUrl     String?
+  mangaId     String  @db.ObjectId
+}
+
+model Manga {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String    @unique
+  link      String    @unique
+  authors   String?
+  artists   String?
+  status    Status
+  trama     String?
+  genres    String?
+  year      Int
+  titles    String?
+}
+
+enum Status {
+  ONGOING
+  PAUSED
+  FINISHED
+}
