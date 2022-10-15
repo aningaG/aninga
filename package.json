@@ -9,7 +9,10 @@
     "test": "nx test"
   },
   "dependencies": {
-    "@prisma/client": "^4.4.0"
+    "@prisma/client": "^4.4.0",
+    "axios": "^1.1.2",
+    "cheerio": "^1.0.0-rc.12",
+    "user-agents": "^1.0.1169"
   },
   "devDependencies": {
     "@angular-devkit/schematics": "^14.2.6",
