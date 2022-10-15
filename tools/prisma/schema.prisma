@@ -36,4 +36,5 @@ enum Status {
   ONGOING
   PAUSED
   FINISHED
+  UNKNOWN
 }
