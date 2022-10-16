@@ -31,17 +31,17 @@ export interface ListChapterI {
   vImage?: string;
 }
 
-export interface ListChaptersI extends ListI {
-  manga?: number;
-}
-
 export interface ListAllMangaI extends ListI {
-  page: number;
+  page?: number;
 }
 
 export interface UpdateMangaI {
   $: CheerioAPI;
-  mangaId: string;
+  id: string;
+}
+
+export interface UpdateAllMangaI extends ListI {
+  manga?: number;
 }
 
 export interface PagesInfo {

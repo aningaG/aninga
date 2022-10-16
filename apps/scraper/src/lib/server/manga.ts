@@ -1,13 +1,14 @@
 import type { Manga } from '@prisma/client';
 import { load } from 'cheerio';
-import type { ListAllMangaI, MangaPageI, PagesInfo } from './types';
+import { listChapters } from './chapter';
+import type { ListAllMangaI, MangaPageI, PagesInfo, UpdateAllMangaI, UpdateMangaI } from './types';
 import { db, getLinksText, getStatus, proxyRequest } from './utils';
 
-const createMany = inserts => {
+const createMany = (inserts: Omit<Manga, 'id'>[]) => {
   db.manga.createMany({ data: inserts });
 };
 
-const updateMany = updates => {
+const updateMany = (updates: Omit<Manga, 'id'>[]) => {
   updates.forEach(({ link, ...manga }) => db.manga.update({ where: { link }, data: { ...manga, link } }));
 };
 
@@ -43,6 +44,56 @@ const getPageManga = async (url: string): Promise<MangaPageI> => {
   return { updates, inserts };
 };
 
+const updateManga = ({ $, id }: UpdateMangaI) => {
+  const manga: Partial<Omit<Manga, 'id'>> = {
+    trama: $('#noidungm').text().trim(),
+  };
+
+  $('.info')
+    .eq(0)
+    .find('.meta-data .col-12')
+    .each((_, el) => {
+      const text = $(el).find('span').text().trim();
+
+      switch (text) {
+        case 'Titoli Alternativi:':
+          manga.titles = getLinksText({ $, el });
+          break;
+
+        case 'Generi:':
+          manga.genres = getLinksText({ $, el });
+          break;
+
+        case 'Autore:':
+          manga.authors = getLinksText({ $, el });
+          break;
+
+        case 'Artista:':
+          manga.artists = getLinksText({ $, el });
+          break;
+
+        case 'Autori:':
+          manga.authors = getLinksText({ $, el });
+          break;
+
+        case 'Artisti:':
+          manga.artists = getLinksText({ $, el });
+          break;
+
+        case 'Anno di uscita:': {
+          const num = Number($(el).find('a').eq(0).text().trim());
+          manga.year = !isNaN(num) ? num : 0;
+          break;
+        }
+
+        default:
+          break;
+      }
+    });
+
+  db.manga.update({ where: { id }, data: manga });
+};
+
 export async function listAllManga({ interval, page }: ListAllMangaI) {
   let current = page || 1;
   const { pages, url } = await getPagesInfo();
@@ -62,5 +113,24 @@ export async function listAllManga({ interval, page }: ListAllMangaI) {
     updates.length && updateMany(updates);
     console.log('Pagina:', current);
     current++;
+  }, interval);
+}
+
+export async function updateAllManga({ interval, manga }: UpdateAllMangaI) {
+  const list = await db.manga.findMany();
+  let current = manga || list.length - 1;
+
+  const timer = setInterval(async () => {
+    if (current < 0) {
+      clearInterval(timer);
+      console.log('Listing chapters done.');
+      return;
+    }
+    const { id, link } = list[current];
+    const $ = load(await proxyRequest(link));
+
+    updateManga({ $, id });
+    listChapters({ $, id });
+    current--;
   }, interval);
 }
