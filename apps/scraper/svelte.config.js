@@ -1,9 +1,8 @@
 import preprocess from 'svelte-preprocess';
-import node from "@sveltejs/adapter-node";
+import adapter from '@sveltejs/adapter-auto';
 import { resolve } from 'path';
 
-const mode = process.env.NODE_ENV;
-const production = mode === "production";
+const production = process.env.NODE_ENV === "production";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -23,20 +22,8 @@ const config = {
     css: false,
   },
   kit: {
-    adapter: node({
-      out: "../../dist/apps/scraper",
-    }),
-    vite: {
-      mode,
-      resolve: {
-        alias: {},
-      },
-      optimizeDeps: {
-        include: [],
-      },
-      envPrefix: "BT_",
-    },
-  },
+		adapter: adapter()
+	}
 };
 
 export default config;

@@ -1,19 +1,21 @@
 {
-  "name": "scraper",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "scraper",
   "projectType": "application",
   "sourceRoot": "apps/scraper/src",
   "targets": {
     "build": {
-      "executor": "@nxext/sveltekit:sveltekit",
+      "executor": "nx:run-script",
+      "outputs": ["apps/scraper/.svelte-kit"],
       "options": {
-        "command": "build"
+        "script": "build"
       }
     },
     "serve": {
-      "executor": "@nxext/sveltekit:sveltekit",
+      "executor": "nx:run-script",
+      "outputs": ["apps/scraper/.svelte-kit"],
       "options": {
-        "command": "dev"
+        "script": "dev"
       }
     },
     "add": {

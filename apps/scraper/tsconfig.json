@@ -24,7 +24,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "files": [],
-  "include": [],
+  "include": ["svelte.config.js", "vite.config.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"
